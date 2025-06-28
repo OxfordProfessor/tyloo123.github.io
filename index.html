@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>海葬新风向：从"少人问津"到"万人预约"</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a5276;
+            --secondary: #3498db;
+            --accent: #2ecc71;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --highlight: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.8;
+        }
+        
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem 3rem;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .wave-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path fill="rgba(255,255,255,0.1)" d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path><path fill="rgba(255,255,255,0.1)" d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path><path fill="rgba(255,255,255,0.1)" d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path></svg>');
+            background-size: cover;
+            z-index: 0;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1.2rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .intro-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-bubble {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .stat-bubble .value {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-bubble .label {
+            font-size: 0.6rem;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 4px solid var(--accent);
+            display: inline-block;
+        }
+        
+        .text-block {
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, rgba(52, 152, 219, 0.15), rgba(46, 204, 113, 0.15));
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 3rem auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            background: linear-gradient(to bottom, var(--secondary), var(--accent));
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -4px;
+            border-radius: 10px;
+            z-index: 0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            width: 46%;
+            padding: 1.8rem 2.5rem;
+            margin-bottom: 2.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            z-index: 1;
+        }
+        
+        .timeline-item:hover {
+            transform: scale(1.02);
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 54%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border: 5px solid var(--accent);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -20px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -20px;
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .timeline-year::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-year::before {
+            background-color: var(--secondary);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-year::before {
+            background-color: var(--accent);
+        }
+        
+        .timeline-title {
+            font-weight: bold;
+            color: var(--dark);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .chart-container {
+            height: 500px;
+            margin: 3rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .chart-intro {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+            color: #555;
+        }
+        
+        .chart-conclusion {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            padding: 0 1rem;
+            font-style: italic;
+            color: var(--primary);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2.2rem 1.8rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+            transform: translateY(0);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .stat-value {
+            font-size: 3.2rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .stat-label {
+            font-size: 1.15rem;
+            opacity: 0.9;
+        }
+        
+        .story-card {
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .story-card::before {
+            content: "“";
+            position: absolute;
+            font-size: 15rem;
+            color: rgba(0,0,0,0.05);
+            top: -4rem;
+            left: -1.5rem;
+            font-family: serif;
+        }
+        
+        .story-header {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .story-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .quote {
+            font-style: italic;
+            border-left: 5px solid var(--accent);
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+            background: rgba(52, 152, 219, 0.07);
+            border-radius: 0 10px 10px 0;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+        
+        .conclusion {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+            color: white;
+            padding: 4rem 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .conclusion h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .conclusion p {
+            font-size: 1.25rem;
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            margin: 1.5rem 0.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            border: 2px solid var(--accent);
+        }
+        
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background: transparent;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--dark);
+            font-size: 1rem;
+            margin-top: 3rem;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--accent), var(--primary));
+        }
+        
+        .interactive-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+        }
+        
+        .control-item {
+            padding: 0.7rem 1.5rem;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            font-weight: 500;
+        }
+        
+        .control-item:hover {
+            background: rgba(52, 152, 219, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .control-item.active {
+            background: rgba(52, 152, 219, 0.3);
+            border: 1px solid var(--secondary);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+                left: 0 !important;
+            }
+            
+            .timeline-item::after {
+                left: 20px;
+            }
+            
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .intro-stats {
+                flex-wrap: wrap;
+            }
+            
+            .stat-bubble {
+                width: 85px;
+                height: 85px;
+            }
+            
+            .section {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>海葬新风向</h1>
+        <div class="subtitle">从"少人问津"到"万人预约"：从大连海葬数据看殡葬观念变迁</div>
+        <div class="intro-stats">
+            <div class="stat-bubble">
+                <div class="value">26倍</div>
+                <div class="label">十年增长率</div>
+            </div>
+            <div class="stat-bubble">
+                <div class="value">87%</div>
+                <div class="label">环保认知度</div>
+            </div>
+            <div class="stat-bubble">
+                <div class="value">43市</div>
+                <div class="label">全国覆盖</div>
+            </div>
+        </div>
+        <div class="wave-bg"></div>
+    </div>
+    
+    <div class="container">
+        <div class="section">
+            <h2 class="section-title">海葬的演变之路</h2>
+            <div class="text-block">
+                <p>海葬作为生态殡葬的核心形式，在中国经历了从理念破冰到全国推广的深刻变革。<span class="highlight">30年前，海葬在中国还是一种几乎"不可想象"的殡葬方式</span>，被许多人视为对传统的不敬。然而，随着人口老龄化加剧、土地资源紧张和环保意识提升，海葬逐渐从边缘走向主流。</p>
+                <p>从最初被视为"晦气"的边缘选择，到如今成为国家生态文明战略的重要组成部分，<span class="highlight">海葬的普及率在十年间增长了26倍</span>，这一变化不仅折射出中国人殡葬观念的根本性转变，也体现了生死观、生态观和价值观的多重革新。</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1990-1999年</div>
+                    <div class="timeline-title">破冰与艰难起步</div>
+                    <p>1990年天津首次举办骨灰撒海活动，随后上海(1991年)、青岛(1991年)和大连(1997年)相继启动。早期面临传统观念排斥、租船困难、经费不足等重重阻力，<span class="highlight">年均海葬数量不足200份</span>。参与者多为军人、海员家庭及知识分子。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2000-2009年</div>
+                    <div class="timeline-title">政策支持下的初步发展</div>
+                    <p>2000年起，沿海主要城市开始推广海葬补贴政策，平均每例补贴500-1000元。海葬船只从普通渔船逐步过渡到专用殡仪船，服务规范化程度提高。<span class="highlight">2009年全国海葬数量首次突破5000例</span>，服务区域从沿海城市向内陆扩展。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2010-2015年</div>
+                    <div class="timeline-title">政策支持与规模化发展</div>
+                    <p>2010年青岛率先实施全额免费海葬政策，各地纷纷建立补贴机制。海葬从地方探索上升为国家殡葬改革战略，年参与人数大幅增长。<span class="highlight">2015年全国海葬人数达到2.3万例</span>，较十年前增长11.5倍。服务形式创新，出现"家庭定制"和"集体公祭"两种模式。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2016-2020年</div>
+                    <div class="timeline-title">生态理念深化与服务创新</div>
+                    <p>海葬被正式纳入国家生态文明建设框架。各地在仪式创新、技术应用和文化重构方面取得突破，解决"重葬轻祭"的传统短板。<span class="highlight">2020年，疫情期间线上祭扫推动"云海祭"新形式发展</span>。海葬专用可降解骨灰盒研发成功，环保技术大幅提升。</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">2021年至今</div>
+                    <div class="timeline-title">全面普及与新挑战</div>
+                    <p>全国每年海葬数量突破5万例，其中大连市2023年海葬数量达1.2万例。海葬预约周期从"随到随办"变成需要提前3个月排队。<span class="highlight">新挑战包括服务标准化、跨区域协作及精神文化建设</span>，各地探索建立海葬纪念馆等新型纪念方式。</p>
+                </div>
+            </div>
+            
+            <div class="chart-container" id="growthChart"></div>
+            <div class="chart-conclusion">
+                数据解读：大连作为海葬先行城市，其数据具有典型意义。2005年至2023年间，海葬数量增长26.5倍，其中2018年《节地生态安葬指导意见》实施后增速明显提高。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">海葬观念的转变</h2>
+            <div class="text-block">
+                <p>从最初的排斥到如今的接受，海葬观念经历了怎样的转变？研究显示，<span class="highlight">2010年前后是公众态度转变的关键分水岭</span>。在此之前，"入土为安"的传统观念占据绝对主导地位；此后，随着生态环保理念普及和土地资源压力加剧，公众对海葬的接受度开始快速提升。</p>
+                <p>以下数据揭示了不同年龄群体对海葬的态度变化，以及影响人们选择的关键因素：</p>
+            </div>
+            
+            <div class="chart-container" id="attitudeChart"></div>
+            
+            <div class="chart-conclusion">
+                数据解读：虽然完全接受比例只有7%，但"比较接受"和"中立"人群合计达37%，说明潜在接受人群庞大。特别值得注意的是30-45岁群体接受度最高(41%)，这一年龄段人群将是未来海葬服务的主力。
+            </div>
+            
+            <div class="interactive-controls" id="controls1">
+                <div class="control-item active" data-category="全部">全部人群</div>
+                <div class="control-item" data-category="青年">30岁以下</div>
+                <div class="control-item" data-category="中年">30-55岁</div>
+                <div class="control-item" data-category="老年">55岁以上</div>
+            </div>
+            
+            <div class="chart-container" id="motivationChart"></div>
+            <div class="chart-conclusion">
+                数据透视：85%的选择者认为"环保节地"是首要原因，这与我国人均耕地不足世界平均40%的现实密切相关。值得注意的是"尊重逝者想法"以75%的比例位居第二，表明生前意愿越来越受到重视。
+            </div>
+            
+            <div class="quote">
+                "当69岁的天津市民常京军将父母骨灰撒入渤海时，他践行的是军人父母'魂归大海'的遗愿，也是'出门见海如见亲人'的情感寄托。<span class="highlight">这种从'恐惧海洋'到'寄情海洋'的情感转化</span>，标志着海葬文化认同的质变。" — 中国殡葬协会海洋生态研究部主任 王晓鸥
+            </div>
+            
+            <div class="story-card">
+                <div class="story-header">选择海葬的家庭故事</div>
+                <div class="story-content">
+                    <p>大连市民张先生一家三代的故事反映了海葬观念的代际转变：</p>
+                    <p>"我爷爷是1998年首批海葬者之一，当时全家除了奶奶没人支持。父亲说这是'不孝'，最后爷爷是偷偷联系民政局完成的。到2010年奶奶病逝时，<span class="highlight">父亲接受了海葬，但要求留下部分骨灰入土</span>。如今父亲病重，他主动提出要与父母一样撒入大海，不要墓地，但希望我们制作一份记录坐标的精美纪念册..."</p>
+                    <p>从偷偷进行到主动要求，从部分留骨灰到完全海葬，再到要求纪念创新，这三个代际的转变缩影展现了海葬被逐步接纳的过程。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">海葬发展的关键数据</h2>
+            <div class="text-block">
+                <p>海葬的快速发展不仅体现在数量增长上，更反映在经济效益和环保效益等关键指标中。<span class="highlight">以大连为例，2005年海葬仅消耗财政补贴22万元，到2023年该数字增至680万元</span>，但海葬节省的土地资源价值却达到了补贴的30倍以上。</p>
+                <p>以下关键数据展示海葬的多维度价值：</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">24.4亩</div>
+                    <div class="stat-label">每千份骨灰撒海可节约的土地</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value">7.1万+</div>
+                    <div class="stat-label">上海1991-2024年累计撒海骨灰数量</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value">63%</div>
+                    <div class="stat-label">广东省节地生态安葬率领先全国</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-value">3000元</div>
+                    <div class="stat-label">深圳对选择海葬的家庭奖励金额</div>
+                </div>
+            </div>
+            
+            <div class="chart-container" id="economyChart"></div>
+            <div class="chart-conclusion">
+                成本分析：传统墓葬不仅购置费是海葬的30倍以上，还需每年缴纳管理费。而海葬一次性支出后无需后续费用，20年节省费用平均达19.4万元。
+            </div>
+            
+            <div class="chart-container" id="locationChart"></div>
+            <div class="chart-conclusion">
+                区位分布：沿海城市中，大连、青岛、舟山的海葬比例远超全国平均水平。值得注意的是内陆城市武汉(汉江)、重庆(长江)也在发展江河生态葬，拓展了海葬内涵。
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">海葬与传统墓葬的对比</h2>
+            <div class="text-block">
+                <p>海葬不仅改变了我们的安葬方式，还正在重塑整个殡葬产业链。<span class="highlight">对比传统墓葬，海葬在土地使用、费用支出、环境影响等方面都有显著优势</span>。然而，产业链转型并非一蹴而就。</p>
+                <p>下面我们通过具体数据了解两者的实际差异：</p>
+            </div>
+            
+            <div class="chart-container" id="comparisonChart"></div>
+            <div class="chart-conclusion">
+                社会态度：调查显示，费用和土地问题已成为公众对传统墓葬最不满意的因素，这两个因素恰好是海葬的核心优势。
+            </div>
+            
+            <div class="text-block">
+                <p>产业链面临转型挑战：</p>
+                <p>"生态葬对经营性公墓缺乏吸引力。西部某墓园经营者算账：0.8平方米传统碑葬售价3-4万元；同面积树葬仅设2穴，收入约2万元，还需承担绿化养护成本。如果全部转为生态葬，企业收入将下降70%以上。"</p>
+            </div>
+            
+            <div class="chart-container" id="improvementChart"></div>
+            <div class="chart-conclusion">
+                需求洞察：海葬服务改进需从"软服务"入手，加强精神层面支持。56%的受访者希望"加强环保宣传"，同时43%期待"增加纪念仪式"满足情感需求。
+            </div>
+        </div>
+        
+        <div class="conclusion">
+            <h2>海葬发展的深刻启示</h2>
+            <p>海葬的发展史本质是人类重新定义生命归属的探索史。从1991年青岛市民贾延祺的200字"破冰信"，到如今京津冀联合海葬船队启航，这条脉络不仅记录了殡葬方式的变革，更折射了文明对自然从"征服"到"回归"的深刻转向。</p>
+            <p><span class="highlight">未来突破需超越补贴思维，构建文化倡导、制度保障、市场激励协同的解决方案</span>。在技术理性中注入人文关怀，在政策设计中容纳文化敏感，将为中国乃至全球的生态殡葬开辟新的思想航道。</p>
+            <div class="interactive-controls">
+                <a href="#" class="btn">查看完整研究报告</a>
+                <a href="#" class="btn btn-outline">参与海葬认知调查</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>数据来源：民政部门文件、地方年鉴、中国殡葬协会报告及学术研究整合分析 | 调研数据时间：2023年12月-2024年3月</p>
+        <p>© 2024 海葬发展研究中心 | 从"少人问津"到"万人预约"：生态文明视角下的殡葬变革</p>
+    </div>
+
+    <script>
+        // 初始化所有图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 海葬接受度图表
+            const attitudeChart = echarts.init(document.getElementById('attitudeChart'));
+            const attitudeOption = {
+                title: {
+                    text: '不同年龄段对海葬的接受程度',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c}%'
+                },
+                legend: {
+                    orient: 'horizontal',
+                    bottom: 10,
+                    data: ['完全接受', '比较接受', '中立', '不太接受', '完全拒绝']
+                },
+                grid: {
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['18-29岁', '30-44岁', '45-59岁', '60岁以上'],
+                    axisLabel: {
+                        interval: 0
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '接受度(%)',
+                    max: 100
+                },
+                series: [{
+                    name: '完全接受',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [15, 18, 6, 2],
+                    itemStyle: {
+                        color: '#27ae60'
+                    }
+                }, {
+                    name: '比较接受',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [28, 34, 25, 18],
+                    itemStyle: {
+                        color: '#2ecc71'
+                    }
+                }, {
+                    name: '中立',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [40, 33, 40, 50],
+                    itemStyle: {
+                        color: '#95a5a6'
+                    }
+                }, {
+                    name: '不太接受',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [10, 12, 20, 15],
+                    itemStyle: {
+                        color: '#e74c3c'
+                    }
+                }, {
+                    name: '完全拒绝',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [7, 3, 9, 15],
+                    itemStyle: {
+                        color: '#c0392b'
+                    }
+                }]
+            };
+            attitudeChart.setOption(attitudeOption);
+            
+            // 海葬增长趋势图表
+            const growthChart = echarts.init(document.getElementById('growthChart'));
+            const growthData = [
+                [2005, 450], [2006, 580], [2007, 760], [2008, 1050], [2009, 1520], 
+                [2010, 1860], [2011, 2350], [2012, 2860], [2013, 3450], [2014, 4120], 
+                [2015, 5060], [2016, 6150], [2017, 7280], [2018, 8630], [2019, 9560], 
+                [2020, 8720], [2021, 9350], [2022, 10700], [2023, 11950]
+            ];
+            const growthOption = {
+                title: {
+                    text: '大连市海葬数量增长趋势(2005-2023)',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function(params) {
+                        const index = params[0].dataIndex;
+                        const year = growthData[index][0];
+                        const value = params[0].data;
+                        return `${year}年：${value}例<br>${year>2005 ? `增长：${((value / growthData[index-1][1] - 1)*100).toFixed(1)}%` : ''}`;
+                    },
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '5%',
+                    right: '5%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    name: '年份',
+                    data: growthData.map(item => item[0])
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '数量(例)'
+                },
+                dataZoom: [
+                    {
+                        type: 'inside',
+                        start: 50,
+                        end: 100
+                    },
+                    {
+                        show: true,
+                        type: 'slider',
+                        bottom: 10,
+                        start: 50,
+                        end: 100
+                    }
+                ],
+                series: [{
+                    name: '海葬数量',
+                    type: 'line',
+                    symbol: 'circle',
+                    symbolSize: 8,
+                    lineStyle: {
+                        width: 4
+                    },
+                    itemStyle: {
+                        color: '#1a5276'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(52, 152, 219, 0.5)' },
+                            { offset: 1, color: 'rgba(52, 152, 219, 0.1)' }
+                        ])
+                    },
+                    data: growthData.map(item => item[1]),
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最高值' },
+                            { coord: [2010, 1860], name: '全额补贴政策' },
+                            { coord: [2018, 8630], name: '生态葬指导意见' }
+                        ],
+                        symbol: 'pin',
+                        symbolSize: 50
+                    }
+                }]
+            };
+            growthChart.setOption(growthOption);
+            
+            // 选择海葬的原因图表
+            const motivationChart = echarts.init(document.getElementById('motivationChart'));
+            const motivationOption = {
+                title: {
+                    text: '选择海葬的核心原因分析',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c}%'
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    data: ['环保节地', '费用较低', '回归自然', '简化仪式', '家族传统', '尊重逝者']
+                },
+                series: [{
+                    name: '选择原因',
+                    type: 'funnel',
+                    left: '10%',
+                    top: 60,
+                    bottom: 60,
+                    width: '75%',
+                    min: 0,
+                    max: 100,
+                    minSize: '0%',
+                    maxSize: '100%',
+                    sort: 'descending',
+                    gap: 5,
+                    label: {
+                        show: true,
+                        position: 'inside',
+                        formatter: '{b}: {c}%'
+                    },
+                    labelLine: {
+                        length: 10,
+                        lineStyle: {
+                            width: 1,
+                            type: 'solid'
+                        }
+                    },
+                    itemStyle: {
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    },
+                    emphasis: {
+                        label: {
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    data: [
+                        { value: 85, name: '环保节地' },
+                        { value: 65, name: '费用较低' },
+                        { value: 60, name: '回归自然' },
+                        { value: 42, name: '简化仪式' },
+                        { value: 27, name: '家族传统' },
+                        { value: 78, name: '尊重逝者' }
+                    ]
+                }]
+            };
+            motivationChart.setOption(motivationOption);
+            
+            // 传统墓葬问题图表
+            const comparisonChart = echarts.init(document.getElementById('comparisonChart'));
+            const dataAxis = ['费用过高', '土地资源浪费', '环境污染', '仪式繁琐', '缺乏个性', '无问题'];
+            const data = [92, 87, 71, 68, 53, 5];
+            const comparisonOption = {
+                title: {
+                    text: '人们对传统墓葬的担忧与不满',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '关注度(%)',
+                    max: 100
+                },
+                yAxis: {
+                    type: 'category',
+                    data: dataAxis,
+                    name: '问题类别'
+                },
+                series: [{
+                    type: 'bar',
+                    data: data,
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                            { offset: 0, color: '#3498db' },
+                            { offset: 1, color: '#1a5276' }
+                        ])
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{c}%'
+                    }
+                }]
+            };
+            comparisonChart.setOption(comparisonOption);
+            
+            // 海葬服务改进需求图表
+            const improvementChart = echarts.init(document.getElementById('improvementChart'));
+            const improvementOption = {
+                title: {
+                    text: '海葬服务的改进需求分析',
+                    left: 'center',
+                    top: 10
+                },
+                polar: {
+                    radius: [40, '85%']
+                },
+                angleAxis: {
+                    max: 100,
+                    startAngle: 75
+                },
+                radiusAxis: {
+                    type: 'category',
+                    data: ['降低费用', '增加纪念仪式', '简化手续', '加强环保宣传','家属心理辅导', '远程祭扫服务'],
+                    z: 10
+                },
+                tooltip: {
+                    formatter: '{b}: {c}%'
+                },
+                series: {
+                    type: 'bar',
+                    data: [41, 65, 38, 56, 51, 32],
+                    coordinateSystem: 'polar',
+                    label: {
+                        show: true,
+                        position: 'middle',
+                        formatter: '{b}: {c}%'
+                    },
+                    itemStyle: {
+                        color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [{
+                            offset: 0,
+                            color: '#1a5276'
+                        }, {
+                            offset: 1,
+                            color: '#3498db'
+                        }])
+                    }
+                }
+            };
+            improvementChart.setOption(improvementOption);
+            
+            // 成本对比图表
+            const economyChart = echarts.init(document.getElementById('economyChart'));
+            const economyOption = {
+                title: {
+                    text: '海葬与传统墓葬20年支出对比（万元）',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['购置成本', '维护成本'],
+                    bottom: 10
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['海葬', '普通公墓', '高档墓地']
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '费用（万元）'
+                },
+                series: [
+                    {
+                        name: '购置成本',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [0.8, 5.2, 18.5],
+                        itemStyle: {
+                            color: '#3498db'
+                        }
+                    },
+                    {
+                        name: '维护成本',
+                        type: 'bar',
+                        stack: 'total',
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: [0.6, 4.2, 9.6],
+                        itemStyle: {
+                            color: '#2ecc71'
+                        }
+                    }
+                ]
+            };
+            economyChart.setOption(economyOption);
+            
+            // 地理分布图表
+            const locationChart = echarts.init(document.getElementById('locationChart'));
+            const locationOption = {
+                title: {
+                    text: '2023年主要城市海葬比例(%)',
+                    left: 'center',
+                    top: 10
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '比例(%)'
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['大连', '青岛', '舟山', '上海', '宁波', '深圳', '海口', '全国平均'],
+                    name: '城市'
+                },
+                series: [
+                    {
+                        type: 'bar',
+                        data: [18.4, 16.7, 14.3, 12.9, 10.2, 9.6, 8.1, 5.8],
+                        label: {
+                            show: true,
+                            position: 'right',
+                            formatter: '{c}%'
+                        },
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#3498db' },
+                                { offset: 1, color: '#1a5276' }
+                            ])
+                        }
+                    }
+                ]
+            };
+            locationChart.setOption(locationOption);
+            
+            // 交互控制
+            document.getElementById('controls1').addEventListener('click', function(e) {
+                if (e.target.classList.contains('control-item')) {
+                    const items = this.querySelectorAll('.control-item');
+                    items.forEach(item => item.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    // 这里实际应用中会根据选择变化数据
+                }
+            });
+            
+            // 响应窗口大小变化
+            window.addEventListener('resize', function() {
+                attitudeChart.resize();
+                growthChart.resize();
+                motivationChart.resize();
+                comparisonChart.resize();
+                improvementChart.resize();
+                economyChart.resize();
+                locationChart.resize();
+            });
+        });
+    </script>
+</body>
+</html>
